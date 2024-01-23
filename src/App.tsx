@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import logo from "./assets/logo.svg";
+import "./App.css";
 
-function App() {
+import RepeatsInput from "./inputs/repeats-input/index";
+
+const Header = (): JSX.Element => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="planned-pooling-calculator m-10">
+      <header className="planned-pooling-header">
+        <h1 className="inline-block">Planned Pooling Calculator</h1>
+        <img
+          src={logo}
+          className="App-logo inline-block animate-bounce"
+          alt="logo"
+        />
       </header>
     </div>
   );
-}
+};
+
+const Body = () => {
+  return (
+    <div className="planned-pooling-body m-10">
+      <RepeatsInput />
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <>
+      <Header />
+      <Body />
+    </>
+  );
+};
 
 export default App;
