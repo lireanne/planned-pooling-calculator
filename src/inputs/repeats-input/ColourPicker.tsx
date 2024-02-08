@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { SketchPicker, type ColorResult, type RGBColor } from "react-color";
+import { HexColorPicker } from "react-colorful";
 
 // Hook to close color picker upon clicking anywhere on screen
 const useOutsideClick = (ref: any, callback: Function) => {
@@ -18,29 +18,31 @@ const useOutsideClick = (ref: any, callback: Function) => {
   }, [ref]);
 };
 
-const ColourPicker = (props: { startingColour: RGBColor }) => {
-  const { startingColour } = props;
+const ColourPicker = (props: { startingColor: string }) => {
+  const { startingColor } = props;
   const ref = useRef<HTMLDivElement | null>(null);
-  const [colour, setColour] = useState<RGBColor>(startingColour);
+  const [color, setColor] = useState<string>(startingColor);
   const [pickerVisible, setPickerVisible] = useState(false);
 
   // Close picker upon clicking anywhere on screen
   useOutsideClick(ref, () => setPickerVisible(false));
 
   return (
-    <div ref={ref} className="inline-block box-border h-full align-middle">
+    <div ref={ref} className="inline-block h-6 align-middle">
       <button
-        className="h-full w-[50px] rounded border"
+        className="h-full w-5/6 rounded-xl border box-content"
         style={{
-          backgroundColor: `rgb(${colour.r},${colour.g},${colour.b})`,
+          backgroundColor: color,
         }}
         onClick={() => setPickerVisible(!pickerVisible)}
       ></button>
       {pickerVisible && (
-        <SketchPicker
-          color={colour}
-          onChange={(selected: ColorResult) => setColour(selected.rgb)}
-        />
+        <div className="z-99">
+          <HexColorPicker
+            color={color}
+            onChange={(selected: string) => setColor(selected)}
+          />
+        </div>
       )}
     </div>
   );
