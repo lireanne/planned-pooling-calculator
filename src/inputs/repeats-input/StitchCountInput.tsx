@@ -1,36 +1,46 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, KeyboardEventHandler } from "react";
+import { Button, ButtonLight } from "../../components/Button";
 
 const StitchCountInput = (props: { startingCount: number }) => {
   const { startingCount } = props;
   const [count, setCount] = useState<number>(startingCount);
-  // return (
-  //   <input
-  //     type="number"
-  //     placeholder="# of stitches"
-  //     className="input input-bordered h-6 w-full max-w-xs"
-  //     value={startingCount}
-  //   />
+
+  const handleKeyPress: KeyboardEventHandler = (e) => {
+    if (["ArrowUp", "+"].includes(e.key)) {
+      setCount(count + 1);
+    }
+
+    if (["ArrowDown", "-"].includes(e.key)) {
+      setCount(count - 1);
+    }
+  };
+
   return (
-    <div className="inline-block align-middle box-border border h-full w-18 rounded text-xs ml-6">
-      <button
-        data-action="decrement"
-        className="hover:bg-gray-200 h-full w-6 rounded cursor-pointer border-r"
-        onClick={() => setCount(count - 1)}
-      >
-        <span className="text-center font-thin relative">-</span>
-      </button>
-      <input
-        type="number"
-        className="h-full w-12 text-xs text-center"
-        value={count}
-      ></input>
-      <button
-        data-action="decrement"
-        className="hover:bg-gray-200 h-full w-6 rounded cursor-pointer border-l"
+    <div className="h-4 text-xs">
+      <span>
+        ×
+        <input
+          type="number"
+          className="h-full w-[50px] border px-1 mx-1 border-gray-400 rounded-sm"
+          value={count}
+          onKeyDown={(e) => handleKeyPress(e)}
+          onChange={() => console.log(count)}
+        ></input>
+        stitches
+      </span>
+
+      <ButtonLight
+        className="h-full aspect-square ml-1"
+        display="-"
+        data-action="increment"
         onClick={() => setCount(count + 1)}
-      >
-        <span className="text-center font-thin relative">+</span>
-      </button>
+      />
+      <ButtonLight
+        className="h-full aspect-square ml-1"
+        display="+"
+        data-action="increment"
+        onClick={() => setCount(count + 1)}
+      />
     </div>
   );
 };

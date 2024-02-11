@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import ColourPicker from "./ColourPicker";
 import StitchCountInput from "./StitchCountInput";
-import Button from "../../components/Button";
+import { Button } from "../../components/Button";
 
 const startingColors: string[] = ["#000000", "#000000", "#000000"];
 
@@ -10,14 +10,16 @@ const RepeatInput = () => {
   const [nColors, setNumColors] = useState<number>(startingColors.length);
 
   return (
-    <div className="w-56">
+    <div>
       <div className={`grid grid-rows-${startingColors.length + 1}`}>
-        <div className="grid grid-cols-[40%_60%]">
-          <p>Colour</p>
-          <p># of Stitches</p>
+        <div className="grid grid-cols-2 text-sm">
+          <p>add colors</p>
         </div>
         {Array.from({ length: nColors }, (_, i) => (
-          <div className="grid grid-cols-[40%_60%] mt-1 mb-1">
+          <div
+            key={`color${i}`}
+            className="grid grid-cols-[50px_auto] h-4 my-1"
+          >
             <ColourPicker startingColor={startingColors[i]} />
             <div>
               <StitchCountInput startingCount={5} />
@@ -28,7 +30,7 @@ const RepeatInput = () => {
 
       <Button
         className="mt-2 items-right float-right"
-        text="Add Color"
+        display="add"
         onClick={() => setNumColors(nColors + 1)}
       ></Button>
     </div>

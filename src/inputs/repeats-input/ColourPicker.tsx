@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { HexColorPicker } from "react-colorful";
+import { ChromePicker, ColorResult } from "react-color";
 
 // Hook to close color picker upon clicking anywhere on screen
 const useOutsideClick = (ref: any, callback: Function) => {
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target)) {
-        console.log("here");
         callback();
       }
     };
@@ -28,9 +27,9 @@ const ColourPicker = (props: { startingColor: string }) => {
   useOutsideClick(ref, () => setPickerVisible(false));
 
   return (
-    <div ref={ref} className="inline-block h-6 align-middle">
+    <div ref={ref} className="h-4 mr-1">
       <button
-        className="h-full w-5/6 rounded-xl border box-content"
+        className="h-full w-full rounded-sm box-content align-top"
         style={{
           backgroundColor: color,
         }}
@@ -38,9 +37,9 @@ const ColourPicker = (props: { startingColor: string }) => {
       ></button>
       {pickerVisible && (
         <div className="z-99">
-          <HexColorPicker
+          <ChromePicker
             color={color}
-            onChange={(selected: string) => setColor(selected)}
+            onChange={(selected: ColorResult) => setColor(selected.hex)}
           />
         </div>
       )}

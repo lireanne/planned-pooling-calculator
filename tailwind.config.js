@@ -3,8 +3,8 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     fontSize: {
-      xs: "0.7rem",
-      sm: "0.8rem",
+      xs: "10px",
+      sm: "12px",
     },
     extend: {
       gridTemplateColumns: {
