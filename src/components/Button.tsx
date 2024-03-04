@@ -25,7 +25,7 @@ const ButtonLight = (props: buttonProps) => {
   return (
     <button
       className={`${props.className}
-        text-white bg-violet-300 rounded-sm
+        text-white bg-violet-300
         hover:text-white hover:bg-violet-400`}
       onClick={props.onClick}
       disabled={props.disabled}

@@ -1,46 +1,48 @@
-import { useState, KeyboardEventHandler } from "react";
+import { useState, useEffect, KeyboardEventHandler } from "react";
 import { Button, ButtonLight } from "../../components/Button";
+import { colorSection } from "./index";
 
-const StitchCountInput = (props: { startingCount: number }) => {
-  const { startingCount } = props;
-  const [count, setCount] = useState<number>(startingCount);
+const StitchCountInput = (props: {
+  colorSection: colorSection;
+  index: number;
+  updateCount: Function;
+}) => {
+  const { index, updateCount } = props;
+  const [count, setCount] = useState<number>(props.colorSection.count);
 
-  const handleKeyPress: KeyboardEventHandler = (e) => {
-    if (["ArrowUp", "+"].includes(e.key)) {
-      setCount(count + 1);
-    }
-
-    if (["ArrowDown", "-"].includes(e.key)) {
-      setCount(count - 1);
-    }
-  };
+  useEffect(() => {
+    updateCount(count, index);
+  }, [count, index]);
 
   return (
     <div className="h-4 text-xs">
-      <span>
-        ×
+      <span>×</span>
+      <span className="h-4 px-1">
+        <ButtonLight
+          className="h-full aspect-square rounded-l-sm border border-violet-500"
+          display="-"
+          data-action="decrement"
+          onClick={() => setCount(count - 1)}
+        />
         <input
           type="number"
-          className="h-full w-[50px] border px-1 mx-1 border-gray-400 rounded-sm"
+          className="h-full w-[40px] text-center border-y border-violet-500"
           value={count}
-          onKeyDown={(e) => handleKeyPress(e)}
+          onKeyDown={(e) => {
+            ["ArrowUp", "+"].includes(e.key) && setCount(count + 1);
+            ["ArrowDown", "-"].includes(e.key) && setCount(count - 1);
+          }}
           onChange={() => console.log(count)}
         ></input>
-        stitches
+        <ButtonLight
+          className="h-full aspect-square rounded-r-sm border border-violet-500"
+          display="+"
+          data-action="increment"
+          onClick={() => setCount(count + 1)}
+        />
       </span>
 
-      <ButtonLight
-        className="h-full aspect-square ml-1"
-        display="-"
-        data-action="increment"
-        onClick={() => setCount(count + 1)}
-      />
-      <ButtonLight
-        className="h-full aspect-square ml-1"
-        display="+"
-        data-action="increment"
-        onClick={() => setCount(count + 1)}
-      />
+      <span>stitches</span>
     </div>
   );
 };

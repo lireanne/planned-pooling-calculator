@@ -1,29 +1,79 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import ColourPicker from "./ColourPicker";
 import StitchCountInput from "./StitchCountInput";
 import { Button } from "../../components/Button";
 
-const startingColors: string[] = ["#000000", "#000000", "#000000"];
+const startingSections = [{}, {}, {}];
+
+export type colorSection = {
+  hex: string;
+  count: number;
+};
 
 const RepeatInput = () => {
-  //const { nColours } = props;
-  const [nColors, setNumColors] = useState<number>(startingColors.length);
+  const [sections, setSections] = useState<colorSection[]>([]);
+
+  const addSection = () => {
+    const newSection = {
+      hex: "#FFFFFF",
+      count: 5,
+    };
+    setSections([...sections, newSection]);
+  };
+
+  const handleUpdateColor = (newHex: string, index: number) => {
+    const updatedSections = sections.map((section, i) => {
+      return i === index ? { ...section, hex: newHex } : section;
+    });
+    setSections(updatedSections);
+  };
+
+  const handleUpdateCount = (newCount: number, index: number) => {
+    const updatedSections = sections.map((section, i) => {
+      return i === index ? { ...section, count: newCount } : section;
+    });
+    setSections(updatedSections);
+  };
+
+  const handleRemoveSection = (index: number) => {
+    // TODO: fix so the right item in order of array is deleted
+    const remainingSections = sections.filter((_, i) => i !== index);
+    setSections(remainingSections);
+  };
+
+  useEffect(() => {
+    console.log("sections", sections);
+  }, [sections]);
 
   return (
     <div>
-      <div className={`grid grid-rows-${startingColors.length + 1}`}>
-        <div className="grid grid-cols-2 text-sm">
+      <div className={`grid grid-rows-${startingSections.length + 1}`}>
+        <div className="text-sm">
           <p>add colors</p>
         </div>
-        {Array.from({ length: nColors }, (_, i) => (
+        {sections.map((section, index) => (
           <div
-            key={`color${i}`}
-            className="grid grid-cols-[50px_auto] h-4 my-1"
+            key={`color-${index}`}
+            className="grid grid-cols-[50px_auto_50px] h-4 my-1"
           >
-            <ColourPicker startingColor={startingColors[i]} />
+            <ColourPicker
+              hex={section.hex}
+              index={index}
+              updateColor={handleUpdateColor}
+            />
             <div>
-              <StitchCountInput startingCount={5} />
+              <StitchCountInput
+                colorSection={section}
+                index={index}
+                updateCount={handleUpdateCount}
+              />
             </div>
+            <Button
+              display="x"
+              onClick={() => {
+                handleRemoveSection(index);
+              }}
+            ></Button>
           </div>
         ))}
       </div>
@@ -31,7 +81,7 @@ const RepeatInput = () => {
       <Button
         className="mt-2 items-right float-right"
         display="add"
-        onClick={() => setNumColors(nColors + 1)}
+        onClick={() => addSection()}
       ></Button>
     </div>
   );
