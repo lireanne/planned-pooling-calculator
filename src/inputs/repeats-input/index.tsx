@@ -1,11 +1,13 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import ColourPicker from "./ColourPicker";
 import StitchCountInput from "./StitchCountInput";
 import { Button } from "../../components/Button";
+import { nanoid } from "nanoid";
 
 const startingSections = [{}, {}, {}];
 
 export type colorSection = {
+  id: string;
   hex: string;
   count: number;
 };
@@ -15,29 +17,31 @@ const RepeatInput = () => {
 
   const addSection = () => {
     const newSection = {
+      id: nanoid(),
       hex: "#FFFFFF",
       count: 5,
     };
     setSections([...sections, newSection]);
   };
 
-  const handleUpdateColor = (newHex: string, index: number) => {
-    const updatedSections = sections.map((section, i) => {
-      return i === index ? { ...section, hex: newHex } : section;
+  const handleUpdateColor = (newHex: string, id: string) => {
+    const updatedSections = sections.map((section) => {
+      return id === section.id ? { ...section, hex: newHex } : section;
     });
     setSections(updatedSections);
   };
 
-  const handleUpdateCount = (newCount: number, index: number) => {
-    const updatedSections = sections.map((section, i) => {
-      return i === index ? { ...section, count: newCount } : section;
+  const handleUpdateCount = (newCount: number, updatedSectionId: string) => {
+    const updatedSections = sections.map((section) => {
+      return updatedSectionId === section.id
+        ? { ...section, count: newCount }
+        : section;
     });
     setSections(updatedSections);
   };
 
-  const handleRemoveSection = (index: number) => {
-    // TODO: fix so the right item in order of array is deleted
-    const remainingSections = sections.filter((_, i) => i !== index);
+  const handleRemoveSection = (id: string) => {
+    const remainingSections = sections.filter((section) => id !== section.id);
     setSections(remainingSections);
   };
 
@@ -51,27 +55,25 @@ const RepeatInput = () => {
         <div className="text-sm">
           <p>add colors</p>
         </div>
-        {sections.map((section, index) => (
+        {sections.map((section) => (
           <div
-            key={`color-${index}`}
+            key={section.id}
             className="grid grid-cols-[50px_auto_50px] h-4 my-1"
           >
             <ColourPicker
-              hex={section.hex}
-              index={index}
+              colorSection={section}
               updateColor={handleUpdateColor}
             />
             <div>
               <StitchCountInput
                 colorSection={section}
-                index={index}
                 updateCount={handleUpdateCount}
               />
             </div>
             <Button
               display="x"
               onClick={() => {
-                handleRemoveSection(index);
+                handleRemoveSection(section.id);
               }}
             ></Button>
           </div>

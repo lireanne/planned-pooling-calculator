@@ -1,18 +1,17 @@
-import { useState, useEffect, KeyboardEventHandler } from "react";
-import { Button, ButtonLight } from "../../components/Button";
+import { useState, useEffect } from "react";
+import { ButtonLight } from "../../components/Button";
 import { colorSection } from "./index";
 
 const StitchCountInput = (props: {
   colorSection: colorSection;
-  index: number;
   updateCount: Function;
 }) => {
-  const { index, updateCount } = props;
+  const { colorSection, updateCount } = props;
   const [count, setCount] = useState<number>(props.colorSection.count);
 
   useEffect(() => {
-    updateCount(count, index);
-  }, [count, index]);
+    updateCount(count, colorSection.id);
+  }, [count]);
 
   return (
     <div className="h-4 text-xs">
@@ -32,7 +31,6 @@ const StitchCountInput = (props: {
             ["ArrowUp", "+"].includes(e.key) && setCount(count + 1);
             ["ArrowDown", "-"].includes(e.key) && setCount(count - 1);
           }}
-          onChange={() => console.log(count)}
         ></input>
         <ButtonLight
           className="h-full aspect-square rounded-r-sm border border-violet-500"

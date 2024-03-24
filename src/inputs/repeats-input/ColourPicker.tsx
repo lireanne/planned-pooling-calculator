@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { ChromePicker, ColorResult } from "react-color";
+import { colorSection } from "./index";
 
 // Hook to close color picker upon clicking anywhere on screen
 const useOutsideClick = (ref: any, callback: Function) => {
@@ -18,20 +19,20 @@ const useOutsideClick = (ref: any, callback: Function) => {
 };
 
 const ColourPicker = (props: {
-  hex: string;
-  index: number;
+  colorSection: colorSection;
+  // hex: string;
   updateColor: Function;
 }) => {
-  const { hex, index, updateColor } = props;
+  const { colorSection, updateColor } = props;
 
   const screenRef = useRef<HTMLDivElement | null>(null);
 
-  const [color, setColor] = useState<string>(hex);
+  const [color, setColor] = useState<string>(colorSection.hex);
   const [pickerVisible, setPickerVisible] = useState(false);
 
   useEffect(() => {
-    updateColor(color, index);
-  }, [color, index]);
+    updateColor(color);
+  }, [color]);
 
   // Close picker upon clicking anywhere on screen
   useOutsideClick(screenRef, () => setPickerVisible(false));
@@ -52,7 +53,7 @@ const ColourPicker = (props: {
             color={color}
             onChange={(selected: ColorResult) => {
               setColor(selected.hex);
-              updateColor(color, index);
+              updateColor(color, colorSection.id);
             }}
           />
         </div>
