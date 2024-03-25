@@ -2,6 +2,7 @@ import logo from "./assets/logo.svg";
 import "./App.css";
 
 import RepeatsInput from "./inputs/repeats-input/index";
+import Canvas from "./canvas/Canvas";
 
 const Header = (): JSX.Element => {
   return (
@@ -22,6 +23,7 @@ const Body = () => {
   return (
     <div className="planned-pooling-body m-10">
       <RepeatsInput />
+      <Canvas />
     </div>
   );
 };
