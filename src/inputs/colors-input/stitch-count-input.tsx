@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { ButtonLight } from "../../components/Button";
-import { colorSection } from "./index";
+import { ButtonLight } from "../../components/button";
+import { colorSection } from "../../pooler";
 
 const StitchCountInput = (props: {
   colorSection: colorSection;
@@ -13,6 +13,11 @@ const StitchCountInput = (props: {
     updateCount(count, colorSection.id);
   }, [count]);
 
+  const decreaseCount = () => {
+    const newCount = count - 1;
+    newCount >= 0 ? setCount(newCount) : setCount(0);
+  };
+
   return (
     <div className="h-4 text-xs">
       <span>×</span>
@@ -21,7 +26,7 @@ const StitchCountInput = (props: {
           className="h-full aspect-square rounded-l-sm border border-violet-500"
           display="-"
           data-action="decrement"
-          onClick={() => setCount(count - 1)}
+          onClick={() => decreaseCount()}
         />
         <input
           type="number"
@@ -29,7 +34,7 @@ const StitchCountInput = (props: {
           value={count}
           onKeyDown={(e) => {
             ["ArrowUp", "+"].includes(e.key) && setCount(count + 1);
-            ["ArrowDown", "-"].includes(e.key) && setCount(count - 1);
+            ["ArrowDown", "-"].includes(e.key) && decreaseCount();
           }}
         ></input>
         <ButtonLight

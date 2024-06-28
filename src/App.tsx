@@ -1,8 +1,8 @@
 import logo from "./assets/logo.svg";
 import "./App.css";
 
-import RepeatsInput from "./inputs/repeats-input/index";
-import Canvas from "./canvas/Canvas";
+import { Pooler } from "./pooler";
+import Canvas from "./canvas/canvas";
 
 const Header = (): JSX.Element => {
   return (
@@ -22,8 +22,7 @@ const Header = (): JSX.Element => {
 const Body = () => {
   return (
     <div className="planned-pooling-body m-10">
-      <RepeatsInput />
-      <Canvas />
+      <Pooler />
     </div>
   );
 };

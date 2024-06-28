@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { ChromePicker, ColorResult } from "react-color";
-import { colorSection } from "./index";
+import { colorSection } from "../../pooler";
 
 // Hook to close color picker upon clicking anywhere on screen
 const useOutsideClick = (ref: any, callback: Function) => {
@@ -18,9 +18,8 @@ const useOutsideClick = (ref: any, callback: Function) => {
   }, [ref]);
 };
 
-const ColourPicker = (props: {
+const ColorPicker = (props: {
   colorSection: colorSection;
-  // hex: string;
   updateColor: Function;
 }) => {
   const { colorSection, updateColor } = props;
@@ -62,4 +61,4 @@ const ColourPicker = (props: {
   );
 };
 
-export default ColourPicker;
+export default ColorPicker;
