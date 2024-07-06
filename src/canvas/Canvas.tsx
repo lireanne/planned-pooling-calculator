@@ -46,8 +46,8 @@ const Canvas = (props: canvasProps) => {
     const context = canvas && canvas.getContext("2d");
 
     if (context) {
-      context.canvas.width = window.innerWidth;
-      context.canvas.height = window.innerHeight;
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
 
       // Given the user-specified number of columns (as stitches per row),
       // calculate the size of each grid cell and the total number of rows

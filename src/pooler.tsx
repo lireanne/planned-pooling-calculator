@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { ColorSectionsInput } from "./inputs/color-section-input/index";
 import { CanvasStitchCountInput } from "./inputs/canvas-stitch-count/index";
 import Canvas from "./canvas/canvas";
-import { MININMUM_STITCHES, DEFAULT_STITCHES } from "./constants";
+import { MIN_STITCHES, DEFAULT_STITCHES } from "./constants";
 import { nanoid } from "nanoid";
 
 export type colorSection = {
@@ -26,20 +26,17 @@ export const Pooler = () => {
   const [canvasCols, setCanvasCols] = useState(DEFAULT_STITCHES);
 
   return (
-    <div className="planned-pooling-body flex flex-row">
-      <div className="basis-1/2">
-        <ColorSectionsInput sections={sections} setSections={setSections} />
+    <div className="lg:flex grid-rows-2 gap-10">
+      <div className="basis-1/4">
         <CanvasStitchCountInput cols={canvasCols} setCols={setCanvasCols} />
-        {canvasCols < MININMUM_STITCHES && (
-          <p className="text-xs text-red-500">
-            Minimum stitches per row is {MININMUM_STITCHES}
-          </p>
-        )}
+        <ColorSectionsInput sections={sections} setSections={setSections} />
       </div>
-      <Canvas
-        colorsections={sections}
-        cols={canvasCols >= MININMUM_STITCHES ? canvasCols : MININMUM_STITCHES}
-      />
+      <div className="h-[80vh] border-l border-t">
+        <Canvas
+          colorsections={sections}
+          cols={canvasCols >= MIN_STITCHES ? canvasCols : MIN_STITCHES}
+        />
+      </div>
     </div>
   );
 };

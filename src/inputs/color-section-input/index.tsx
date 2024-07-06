@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 import ColorPicker from "./color-picker";
 import StitchCountInput from "./stitch-count-input";
-import { Button, ButtonLight } from "../../components/button";
+import { Button, DeleteButton } from "../../components/button";
 import { colorSection } from "../../pooler";
 
 const startingSections = [{}, {}, {}];
@@ -45,40 +45,39 @@ export const ColorSectionsInput = (props: colorInputProps) => {
   };
 
   return (
-    <div>
-      <div className={`grid grid-rows-${startingSections.length + 1}`}>
-        <div className="text-md">
-          <p>add colors</p>
-        </div>
-        {sections.map((section) => (
-          <div
-            key={section.id}
-            className="grid grid-cols-[80px_250px_auto] h-6 my-1.5"
-          >
-            <ColorPicker
-              colorSection={section}
-              updateColor={handleUpdateColor}
-            />
-            <div>
-              <StitchCountInput
-                colorSection={section}
-                updateCount={handleUpdateCount}
-              />
-            </div>
-            <Button
-              className="w-4"
-              display="x"
-              onClick={() => {
-                handleRemoveSection(section.id);
-              }}
-            ></Button>
-          </div>
-        ))}
-      </div>
+    <div className="input-container">
+      <p>add colors</p>
 
+      {sections.map((section, i) => (
+        <div
+          key={section.id}
+          className="w-full my-1 whitespace-nowrap flex-no-wrap"
+        >
+          <ColorPicker
+            colorSection={section}
+            updateColor={handleUpdateColor}
+            showPlaceholderText={i === 0}
+          />
+          <StitchCountInput
+            colorSection={section}
+            updateCount={handleUpdateCount}
+            showPlaceholderText={i === 0}
+          />
+          <DeleteButton
+            className={`align-top h-7 aspect-square rounded-sm mx-1 ${
+              // Add margin-top to first element to accomodate placeholder text
+              i === 0 && "mt-4"
+            }`}
+            display="×"
+            onClick={() => {
+              handleRemoveSection(section.id);
+            }}
+          ></DeleteButton>
+        </div>
+      ))}
       <Button
-        className="mt-2 items-right float-right p-1 aspect-square h-6"
-        display="+"
+        className="text-md py-1 mt-1 w-full"
+        display="add"
         onClick={() => handleAddColor()}
       ></Button>
     </div>

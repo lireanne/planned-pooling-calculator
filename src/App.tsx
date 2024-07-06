@@ -1,8 +1,7 @@
+import { Helmet } from "react-helmet";
 import logo from "./assets/logo.svg";
 import "./App.css";
-
 import { Pooler } from "./pooler";
-import Canvas from "./canvas/canvas";
 
 const Header = (): JSX.Element => {
   return (
@@ -29,10 +28,14 @@ const Body = () => {
 
 const App = () => {
   return (
-    <>
+    <div className="application">
+      <Helmet>
+        <title>Planned Pooling Calculator</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Helmet>
       <Header />
       <Body />
-    </>
+    </div>
   );
 };
 

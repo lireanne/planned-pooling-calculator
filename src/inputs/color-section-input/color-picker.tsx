@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { ChromePicker, ColorResult } from "react-color";
 import { colorSection } from "../../pooler";
+import { Button } from "../../components/button";
 
 // Hook to close color picker upon clicking anywhere on screen
 const useOutsideClick = (ref: any, callback: Function) => {
@@ -21,8 +22,9 @@ const useOutsideClick = (ref: any, callback: Function) => {
 const ColorPicker = (props: {
   colorSection: colorSection;
   updateColor: Function;
+  showPlaceholderText?: boolean;
 }) => {
-  const { colorSection, updateColor } = props;
+  const { colorSection, updateColor, showPlaceholderText } = props;
 
   const screenRef = useRef<HTMLDivElement | null>(null);
 
@@ -37,17 +39,21 @@ const ColorPicker = (props: {
   useOutsideClick(screenRef, () => setPickerVisible(false));
 
   return (
-    <div ref={screenRef} className="h-6">
-      <button
-        className="h-full w-full rounded-sm box-content border align-top"
+    <div ref={screenRef} className="w-[100px] inline-block align-top mr-2">
+      {showPlaceholderText && <div className="text-xs align-top">color </div>}
+
+      <Button
+        className="h-7 w-full rounded-sm"
         style={{
-          background: color,
+          backgroundColor: color,
           border: "solid rgba(0, 0, 0, 0.2)",
+          borderSizing: "border-box",
         }}
+        display=""
         onClick={() => setPickerVisible(!pickerVisible)}
-      ></button>
+      />
       {pickerVisible && (
-        <div className="z-99">
+        <div className="absolute z-99">
           <ChromePicker
             color={color}
             onChange={(selected: ColorResult) => {

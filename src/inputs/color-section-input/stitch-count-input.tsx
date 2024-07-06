@@ -6,8 +6,9 @@ import { colorSection } from "../../pooler";
 const StitchCountInput = (props: {
   colorSection: colorSection;
   updateCount: Function;
+  showPlaceholderText?: boolean;
 }) => {
-  const { colorSection, updateCount } = props;
+  const { colorSection, updateCount, showPlaceholderText } = props;
   const [count, setCount] = useState<number>(props.colorSection.count);
 
   useEffect(() => {
@@ -20,33 +21,32 @@ const StitchCountInput = (props: {
   };
 
   return (
-    <div className="h-6 text-md">
-      <span className="mx-2">×</span>
-      <span>
-        <ButtonLight
-          className="h-full aspect-square rounded-l-sm border border-violet-500"
-          display="-"
-          data-action="decrement"
-          onClick={() => decreaseCount()}
-        />
-        <input
-          type="number"
-          className="h-full w-[40px] text-center border-y box-content border-violet-500"
-          value={count}
-          onKeyDown={(e) => {
-            ["ArrowUp", "+"].includes(e.key) && setCount(count + 1);
-            ["ArrowDown", "-"].includes(e.key) && decreaseCount();
-          }}
-        ></input>
-        <ButtonLight
-          className="h-full aspect-square rounded-r-sm border border-violet-500"
-          display="+"
-          data-action="increment"
-          onClick={() => setCount(count + 1)}
-        />
-      </span>
+    <div className="h-7 inline-block align-middle">
+      {showPlaceholderText && (
+        <div className="text-xs align-top">stitch count</div>
+      )}
 
-      <span className="mx-2">stitches</span>
+      <ButtonLight
+        className="w-7 aspect-square rounded-l-sm align-top"
+        display="-"
+        data-action="decrement"
+        onClick={() => decreaseCount()}
+      />
+      <input
+        type="number"
+        className="h-full text-center border-y border-violet-500 align-top"
+        value={count}
+        onKeyDown={(e) => {
+          ["ArrowUp", "+"].includes(e.key) && setCount(count + 1);
+          ["ArrowDown", "-"].includes(e.key) && decreaseCount();
+        }}
+      />
+      <ButtonLight
+        className="w-7 aspect-square rounded-r-sm align-top"
+        display="+"
+        data-action="increment"
+        onClick={() => setCount(count + 1)}
+      />
     </div>
   );
 };

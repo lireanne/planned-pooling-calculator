@@ -36,8 +36,3 @@
     transform: rotate(360deg);
   }
 }
-
-canvas {
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-}
