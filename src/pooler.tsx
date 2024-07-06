@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
-import ColorsInput from "./inputs/colors-input/index";
+import { useState, useEffect, useRef } from "react";
+import { ColorSectionsInput } from "./inputs/color-section-input/index";
+import { CanvasStitchCountInput } from "./inputs/canvas-stitch-count/index";
 import Canvas from "./canvas/canvas";
+import { MININMUM_STITCHES, DEFAULT_STITCHES } from "./constants";
 import { nanoid } from "nanoid";
 
 export type colorSection = {
@@ -15,53 +17,29 @@ const defaultColorSections = [
   { id: nanoid(), hex: "#FFFFFF", count: 5 },
 ];
 
-/** Component including input to select repeating color sections
- * and canvas to display the planned pooling.
- */
 export const Pooler = () => {
+  // Color sections to be repeated within the canvas
   const [sections, setSections] =
     useState<colorSection[]>(defaultColorSections);
 
-  const handleAddColor = () => {
-    const newSection = {
-      id: nanoid(),
-      hex: "#FFFFFF",
-      count: 5,
-    };
-    setSections([...sections, newSection]);
-  };
-
-  const handleUpdateColor = (newHex: string, id: string) => {
-    const updatedSections = sections.map((section) => {
-      return id === section.id ? { ...section, hex: newHex } : section;
-    });
-    setSections(updatedSections);
-  };
-
-  const handleUpdateCount = (newCount: number, updatedSectionId: string) => {
-    const updatedSections = sections.map((section) => {
-      return updatedSectionId === section.id
-        ? { ...section, count: newCount }
-        : section;
-    });
-    setSections(updatedSections);
-  };
-
-  const handleRemoveSection = (id: string) => {
-    const remainingSections = sections.filter((section) => id !== section.id);
-    setSections(remainingSections);
-  };
+  // # of stitches per row represented by # of columns in the canvas
+  const [canvasCols, setCanvasCols] = useState(DEFAULT_STITCHES);
 
   return (
-    <div className="planned-pooling-body m-10">
-      <ColorsInput
-        sections={sections}
-        handleAddColor={handleAddColor}
-        handleUpdateColor={handleUpdateColor}
-        handleUpdateCount={handleUpdateCount}
-        handleRemoveSection={handleRemoveSection}
+    <div className="planned-pooling-body flex flex-row">
+      <div className="basis-1/2">
+        <ColorSectionsInput sections={sections} setSections={setSections} />
+        <CanvasStitchCountInput cols={canvasCols} setCols={setCanvasCols} />
+        {canvasCols < MININMUM_STITCHES && (
+          <p className="text-xs text-red-500">
+            Minimum stitches per row is {MININMUM_STITCHES}
+          </p>
+        )}
+      </div>
+      <Canvas
+        colorsections={sections}
+        cols={canvasCols >= MININMUM_STITCHES ? canvasCols : MININMUM_STITCHES}
       />
-      <Canvas colorsections={sections} />
     </div>
   );
 };

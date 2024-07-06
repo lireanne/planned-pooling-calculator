@@ -37,9 +37,9 @@ const ColorPicker = (props: {
   useOutsideClick(screenRef, () => setPickerVisible(false));
 
   return (
-    <div ref={screenRef} className="h-4 mr-1">
+    <div ref={screenRef} className="h-6">
       <button
-        className="h-full w-full rounded-sm border align-top"
+        className="h-full w-full rounded-sm box-content border align-top"
         style={{
           background: color,
           border: "solid rgba(0, 0, 0, 0.2)",
