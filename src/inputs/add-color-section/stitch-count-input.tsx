@@ -36,6 +36,7 @@ const StitchCountInput = (props: {
         type="number"
         className="h-full text-center border-y border-violet-500 align-top"
         value={count}
+        onChange={(e) => setCount(parseInt(e.target.value))}
         onKeyDown={(e) => {
           ["ArrowUp", "+"].includes(e.key) && setCount(count + 1);
           ["ArrowDown", "-"].includes(e.key) && decreaseCount();

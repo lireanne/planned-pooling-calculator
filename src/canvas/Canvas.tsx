@@ -3,42 +3,24 @@ import { colorSection } from "../pooler";
 import { hexIsLight } from "../utils";
 
 type canvasProps = {
-  colorsections: colorSection[];
+  colorSections: colorSection[];
   cols: number;
+  knitBackAndForth?: boolean; // optional prop to toggle back-and-forth knitting
 };
 
 /** Using a grid to represent a knitted swatch, where the color of each cell
  * is determined by the given colorSections prop.
  */
 const Canvas = (props: canvasProps) => {
-  const { colorsections, cols } = props;
+  const { colorSections, cols, knitBackAndForth } = props;
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Return an array of hex values mapped to each of the grid cells
-  const getAllGridHexValues = (
-    colorSections: colorSection[],
-    totalGrids: number
-  ): string[] => {
-    // Array of hex values per each repeat of colorSections
-    const repeatedGrids = colorSections.reduce((acc, section) => {
-      const { count, hex } = section;
-      const x = Array<string>(count).fill(hex);
-      return acc.concat(x);
-    }, [] as string[]);
-
-    // Get max # of times the colorSections can repeat within the grid
-    const nRepeats = Math.floor(totalGrids / repeatedGrids.length);
-    const completeRepeats = Array(nRepeats).fill(repeatedGrids).flat();
-
-    // Check if there are remaining grids left after all possible repeats
-    const nRemainingGrids = totalGrids - completeRepeats.length;
-    if (nRemainingGrids > 0) {
-      const remainingGrids = repeatedGrids.slice(0, nRemainingGrids);
-      return [...completeRepeats, ...remainingGrids];
-    }
-
-    return completeRepeats;
-  };
+  // Get the full repeat of colorSections as an array of hex values
+  const fullRepeat = colorSections.reduce((acc, section) => {
+    const { count, hex } = section;
+    const x = Array<string>(count).fill(hex);
+    return acc.concat(x);
+  }, [] as string[]);
 
   // Draw the canvas
   useEffect(() => {
@@ -51,41 +33,60 @@ const Canvas = (props: canvasProps) => {
 
       // Given the user-specified number of columns (as stitches per row),
       // calculate the size of each grid cell and the total number of rows
-      const gridWidth = Math.floor(canvas.width / cols);
-      const gridHeight = (gridWidth / 4) * 5; // 5:4 aspect ratio for a knitted stitch
-      const rows = Math.floor(canvas.height / gridHeight);
+      const cellWidth = Math.floor(canvas.width / cols);
+      const cellHeight = Math.floor((cellWidth / 4) * 5); // 5:4 aspect ratio for a knitted stitch
+      const rows = Math.floor(canvas.height / cellHeight);
 
-      const allGridHexValues = getAllGridHexValues(colorsections, rows * cols);
+      const drawCell = (col: number, row: number, hex: string) => {
+        hexIsLight(hex)
+          ? (context.strokeStyle = "lightgray")
+          : (context.strokeStyle = "white");
 
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          // Get the hex value of the current grid cell from the allGridHexValues array
-          const hex = allGridHexValues[r * cols + c];
+        context.fillStyle = hex;
+        context.lineWidth = 0.5;
 
-          hexIsLight(hex)
-            ? (context.strokeStyle = "lightgrey")
-            : (context.strokeStyle = "white");
+        context.beginPath();
+        context.rect(
+          // Add 0.5 to prevent anti-aliasing https://stackoverflow.com/a/8696641
+          col * cellWidth + 0.5,
+          row * cellHeight + 0.5,
+          cellWidth,
+          cellHeight
+        );
+        context.fill();
+        context.stroke();
+      };
 
-          context.fillStyle = hex;
-          context.lineWidth = 1;
-          context.strokeRect(
-            c * gridWidth,
-            r * gridHeight,
-            gridWidth,
-            gridHeight
-          );
-          context.fillRect(
-            c * gridWidth,
-            r * gridHeight,
-            gridWidth,
-            gridHeight
-          );
+      let tracker = 0; // Track current position in the fullRepeat array
+
+      let shouldReverseCurrentRow = false;
+
+      // Iterate through each grid cell and fill in the corresponding color
+      // starting from the bottom-right corner (per knitting convention)
+      for (let r = rows - 1; r >= 0; r--) {
+        console.log(cellWidth);
+        if (shouldReverseCurrentRow) {
+          for (let c = 0; c < cols; c++) {
+            const hex = fullRepeat[tracker];
+            tracker = tracker === fullRepeat.length - 1 ? 0 : tracker + 1;
+            drawCell(c, r, hex);
+          }
+        } else {
+          for (let c = cols - 1; c >= 0; c--) {
+            const hex = fullRepeat[tracker];
+            tracker = tracker === fullRepeat.length - 1 ? 0 : tracker + 1;
+            drawCell(c, r, hex);
+          }
         }
+
+        // If backAndForth is enabled, next row should be reversed
+        knitBackAndForth &&
+          (shouldReverseCurrentRow = !shouldReverseCurrentRow);
       }
     }
-  }, [colorsections, cols]);
+  }, [colorSections, cols, knitBackAndForth]);
 
-  return <canvas ref={canvasRef} {...props}></canvas>;
+  return <canvas ref={canvasRef}></canvas>;
 };
 
 export default Canvas;

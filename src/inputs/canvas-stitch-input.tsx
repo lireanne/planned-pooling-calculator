@@ -1,5 +1,5 @@
-import { MIN_STITCHES, MAX_STITCHES } from "../../constants";
-import { RangeSlider } from "../../components/range-slider";
+import { MIN_STITCHES, MAX_STITCHES } from "../constants";
+import { RangeSlider } from "../components/range-slider";
 
 /** Input component for setting the number of stitches per row in the canvas */
 export const CanvasStitchCountInput = (props: {
