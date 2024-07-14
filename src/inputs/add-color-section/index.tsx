@@ -3,8 +3,7 @@ import ColorPicker from "./color-picker";
 import StitchCountInput from "./stitch-count-input";
 import { Button, DeleteButton } from "../../components/button";
 import { colorSection } from "../../pooler";
-
-const startingSections = [{}, {}, {}];
+import { HEX_PALETTES } from "../../constants";
 
 type colorInputProps = {
   sections: colorSection[];
@@ -44,10 +43,37 @@ export const ColorSectionsInput = (props: colorInputProps) => {
     setSections(remainingSections);
   };
 
+  const handleRandomizeColors = () => {
+    const randomIntInRange = (min: number, max: number) => {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    };
+
+    const randomHexPalette =
+      HEX_PALETTES[Math.floor(Math.random() * HEX_PALETTES.length)];
+
+    const sections = randomHexPalette.map((hex, i) => {
+      return {
+        id: nanoid(),
+        hex: hex,
+        count: randomIntInRange(1, 10),
+      };
+    });
+
+    setSections(sections);
+  };
+
+  const handleShuffleColors = () => {
+    const shuffledSections = sections
+      .map((value) => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+
+    setSections(shuffledSections);
+  };
+
   return (
     <div className="input-container">
       <p>add colors</p>
-
       {sections.map((section, i) => (
         <div
           key={section.id}
@@ -77,8 +103,21 @@ export const ColorSectionsInput = (props: colorInputProps) => {
       ))}
       <Button
         className="text-md py-1 mt-1 w-full"
-        display="add"
+        display="add color"
         onClick={() => handleAddColor()}
+      ></Button>
+
+      <hr className="h-px my-4 bg-gray-300 border-0"></hr>
+
+      <Button
+        className="text-md py-1 mt-1 w-full"
+        display="randomize!"
+        onClick={() => handleRandomizeColors()}
+      ></Button>
+      <Button
+        className="text-md py-1 mt-1 w-full"
+        display="shuffle colors!"
+        onClick={() => handleShuffleColors()}
       ></Button>
     </div>
   );

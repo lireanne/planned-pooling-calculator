@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Switch from "react-switch";
 
 /* Allows user to toggle between flat & circular knitting.
@@ -9,7 +8,7 @@ import Switch from "react-switch";
  * displaying colors left-to-right and right-to-left.
  * If knitting circular, each row will display colors in the same direction.
  */
-export const FlatCircularToggle = (props: {
+export const KnittingDirectionToggle = (props: {
   knitBackAndForth: boolean;
   setKnitBackAndForth: Function;
 }) => {
@@ -25,7 +24,7 @@ export const FlatCircularToggle = (props: {
         <Switch
           className="align-center"
           onChange={() => setKnitBackAndForth(!knitBackAndForth)}
-          checked={knitBackAndForth}
+          checked={!knitBackAndForth}
           onColor="#8b5cf6"
           offColor="#8b5cf6"
           checkedIcon={false}

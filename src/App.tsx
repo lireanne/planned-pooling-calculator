@@ -5,7 +5,7 @@ import { Pooler } from "./pooler";
 
 const Header = (): JSX.Element => {
   return (
-    <div className="planned-pooling-calculator m-10">
+    <div className="planned-pooling-calculator mx-10 my-4">
       <header className="planned-pooling-header">
         <h1 className="inline-block">Planned Pooling Calculator</h1>
         <img
@@ -20,7 +20,7 @@ const Header = (): JSX.Element => {
 
 const Body = () => {
   return (
-    <div className="planned-pooling-body m-10">
+    <div className="planned-pooling-body mx-10 my-4">
       <Pooler />
     </div>
   );

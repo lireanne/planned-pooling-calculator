@@ -6,7 +6,7 @@ interface buttonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   style?: object;
 }
 
-const Button = (props: buttonProps) => {
+export const Button = (props: buttonProps) => {
   return (
     <button
       className={`${props.className}
@@ -22,7 +22,7 @@ const Button = (props: buttonProps) => {
   );
 };
 
-const ButtonLight = (props: buttonProps) => {
+export const ButtonLight = (props: buttonProps) => {
   return (
     <button
       className={`${props.className}
@@ -37,7 +37,7 @@ const ButtonLight = (props: buttonProps) => {
   );
 };
 
-const DeleteButton = (props: buttonProps) => {
+export const DeleteButton = (props: buttonProps) => {
   return (
     <button
       className={`
@@ -51,5 +51,3 @@ const DeleteButton = (props: buttonProps) => {
     </button>
   );
 };
-
-export { Button, ButtonLight, DeleteButton };
