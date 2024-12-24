@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/planned-pooling-calculator/static/css/main.0376efd0.css",
+    "main.js": "/planned-pooling-calculator/static/js/main.0d53bece.js",
+    "static/media/logo.svg": "/planned-pooling-calculator/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/planned-pooling-calculator/index.html",
+    "main.0376efd0.css.map": "/planned-pooling-calculator/static/css/main.0376efd0.css.map",
+    "main.0d53bece.js.map": "/planned-pooling-calculator/static/js/main.0d53bece.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0376efd0.css",
+    "static/js/main.0d53bece.js"
+  ]
+}
