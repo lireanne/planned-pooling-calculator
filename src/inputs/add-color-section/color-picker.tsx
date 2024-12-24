@@ -16,15 +16,15 @@ const useOutsideClick = (ref: any, callback: Function) => {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [ref]);
+  }, [ref, callback]);
 };
 
 const ColorPicker = (props: {
   colorSection: colorSection;
   updateColor: Function;
-  showPlaceholderText?: boolean;
+  style?: string;
 }) => {
-  const { colorSection, updateColor, showPlaceholderText } = props;
+  const { colorSection, updateColor, style } = props;
 
   const screenRef = useRef<HTMLDivElement | null>(null);
 
@@ -33,15 +33,13 @@ const ColorPicker = (props: {
 
   useEffect(() => {
     updateColor(color);
-  }, [color]);
+  }, [color, updateColor]);
 
   // Close picker upon clicking anywhere on screen
   useOutsideClick(screenRef, () => setPickerVisible(false));
 
   return (
-    <div ref={screenRef} className="w-[100px] inline-block align-top mr-2">
-      {showPlaceholderText && <div className="text-xs align-top">color </div>}
-
+    <div ref={screenRef} className={style}>
       <Button
         className="h-7 w-full rounded-sm"
         style={{

@@ -10,7 +10,7 @@ export const CanvasStitchCountInput = (props: {
 
   return (
     <div className="input-container">
-      <h1 className="mb-2">swatch size</h1>
+      <h1>swatch size</h1>
       <div className="mb-4 w-full">
         <div className="text-xs">stitches per row</div>
         <input

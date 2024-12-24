@@ -6,14 +6,14 @@ import { colorSection } from "../../pooler";
 const StitchCountInput = (props: {
   colorSection: colorSection;
   updateCount: Function;
-  showPlaceholderText?: boolean;
+  style?: string;
 }) => {
-  const { colorSection, updateCount, showPlaceholderText } = props;
+  const { colorSection, updateCount, style } = props;
   const [count, setCount] = useState<number>(props.colorSection.count);
 
   useEffect(() => {
     updateCount(count, colorSection.id);
-  }, [count]);
+  }, [count, updateCount, colorSection.id]);
 
   const decreaseCount = () => {
     const newCount = count - 1;
@@ -21,11 +21,7 @@ const StitchCountInput = (props: {
   };
 
   return (
-    <div className="h-7 inline-block align-middle">
-      {showPlaceholderText && (
-        <div className="text-xs align-top">stitch count</div>
-      )}
-
+    <div className={style}>
       <ButtonLight
         className="w-7 aspect-square rounded-l-sm align-top"
         display="-"

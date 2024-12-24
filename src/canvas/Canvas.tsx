@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { colorSection } from "../pooler";
 import { hexIsLight } from "../utils";
 
@@ -64,7 +64,6 @@ const Canvas = (props: canvasProps) => {
       // Iterate through each grid cell and fill in the corresponding color
       // starting from the bottom-right corner (per knitting convention)
       for (let r = rows - 1; r >= 0; r--) {
-        console.log(cellWidth);
         if (shouldReverseCurrentRow) {
           for (let c = 0; c < cols; c++) {
             const hex = fullRepeat[tracker];
@@ -84,7 +83,7 @@ const Canvas = (props: canvasProps) => {
           (shouldReverseCurrentRow = !shouldReverseCurrentRow);
       }
     }
-  }, [colorSections, cols, knitBackAndForth]);
+  }, [colorSections, cols, knitBackAndForth, fullRepeat]);
 
   return <canvas ref={canvasRef}></canvas>;
 };

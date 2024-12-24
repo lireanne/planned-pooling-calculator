@@ -11,6 +11,9 @@
 @layer components {
   .input-container {
     @apply rounded-md border p-4 shadow-lg border-violet-300 mb-4;
+    h1 {
+      @apply mb-2;
+    }
   }
 }
 

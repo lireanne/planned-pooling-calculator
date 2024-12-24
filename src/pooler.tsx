@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ColorSectionsInput } from "./inputs/add-color-section/index";
+import { ColorSectionsInput } from "./inputs/add-color-section/color-sections-input";
 import { CanvasStitchCountInput } from "./inputs/canvas-stitch-input";
 import { KnittingDirectionToggle } from "./inputs/knitting-direction-toggle";
 import Canvas from "./canvas/canvas";
@@ -9,7 +9,6 @@ import {
   MAX_STITCHES,
   DEFAULT_KNIT_BACK_AND_FORTH,
   DEFAULT_COLOR_SECTIONS,
-  HEX_PALETTES,
 } from "./constants";
 import { nanoid } from "nanoid";
 
