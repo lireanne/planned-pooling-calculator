@@ -8,4 +8,54 @@
     -webkit-appearance: none;
     margin: 0;
   }
+
+  input {
+    @apply border border-violet-500;
+  }
+
+  html {
+    @apply text-gray-800;
+  }
+
+  a {
+    @apply hover:text-violet-500 underline;
+  }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+      "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+      "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+      monospace;
+  }
+
+  canvas {
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+
+  .ranbow-button-0 {
+    color: red;
+  }
+
+  .warning-message {
+    @apply text-xs text-red-500;
+  }
+}
+
+@layer components {
+  .input-container {
+    @apply rounded-md border p-4 shadow-lg border-violet-300 mb-4;
+    h1 {
+      @apply mb-2;
+    }
+  }
 }

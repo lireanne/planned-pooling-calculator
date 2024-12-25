@@ -1,3 +1,7 @@
+export const APP_TITLE = "Planned Pooling Calculator";
+export const GITHUB_URL =
+  "https://github.com/lireanne/planned-pooling-calculator";
+
 export const DEFAULT_STITCHES = 60;
 export const MAX_STITCHES = 150;
 export const MIN_STITCHES = 20;

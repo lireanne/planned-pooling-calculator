@@ -1,17 +1,18 @@
 import { Helmet } from "react-helmet";
-import logo from "./assets/logo.svg";
+import duck from "./assets/rubber-duck.png";
 import "./App.css";
 import { Pooler } from "./pooler";
+import { APP_TITLE, GITHUB_URL } from "./constants";
 
 const Header = (): JSX.Element => {
   return (
     <div className="planned-pooling-calculator mx-10 my-4">
       <header className="planned-pooling-header">
-        <h1 className="inline-block">Planned Pooling Calculator</h1>
+        <h1 className="inline-block">{APP_TITLE}</h1>
         <img
-          src={logo}
+          src={duck}
           className="App-logo inline-block animate-bounce"
-          alt="logo"
+          alt="duckie"
         />
       </header>
     </div>
@@ -26,15 +27,27 @@ const Body = () => {
   );
 };
 
+const Footer = () => {
+  return (
+    <div className="planned-pooling-footer mx-10 my-4">
+      <a href={GITHUB_URL}>github</a>
+    </div>
+  );
+};
+
 const App = () => {
   return (
     <div className="application">
       <Helmet>
-        <title>Planned Pooling Calculator</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{APP_TITLE}</title>
+        <meta
+          name="viewport"
+          content="width=device-width, height=device-height initial-scale=1.0"
+        />
       </Helmet>
       <Header />
       <Body />
+      <Footer />
     </div>
   );
 };
