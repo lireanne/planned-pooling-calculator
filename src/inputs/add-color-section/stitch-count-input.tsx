@@ -5,7 +5,7 @@ import { colorSection } from "../../pooler";
 // Input component for updating the stitch count of a color section
 const StitchCountInput = (props: {
   colorSection: colorSection;
-  updateCount: Function;
+  updateCount: (newCount: number, id: string) => void;
   style?: string;
 }) => {
   const { colorSection, updateCount, style } = props;
@@ -30,7 +30,7 @@ const StitchCountInput = (props: {
       />
       <input
         type="number"
-        className="h-full text-center border-y border-violet-500 align-top"
+        className="h-full text-center border-y align-top"
         value={count}
         onChange={(e) => setCount(parseInt(e.target.value))}
         onKeyDown={(e) => {

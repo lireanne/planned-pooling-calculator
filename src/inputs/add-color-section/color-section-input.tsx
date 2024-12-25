@@ -8,15 +8,17 @@ import { CSS } from "@dnd-kit/utilities";
 
 type colorSectionInputProps = {
   section: colorSection;
-  handleUpdateColor: Function;
-  handleUpdateCount: Function;
-  handleRemoveSection: Function;
+  handleUpdateColor: (newHex: string, id: string) => void;
+  handleUpdateCount: (newCount: number, id: string) => void;
+  handleRemoveSection: (id: string) => void;
   colorPickerColStyle?: string;
   stitchCountColStyle?: string;
   deleteColStyle?: string;
   sortColStyle?: string;
 };
 
+/** Input component for updating a single color section
+ * (updating color, stitch count, and delete section) */
 export const ColorSectionInput = (props: colorSectionInputProps) => {
   const {
     section,

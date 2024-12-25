@@ -1,7 +1,5 @@
-import { nanoid } from "nanoid";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import {
-  arrayMove,
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
@@ -9,11 +7,16 @@ import {
 import { ColorSectionInput } from "./color-section-input";
 import { Button } from "../../components/button";
 import { colorSection } from "../../pooler";
-import { HEX_PALETTES } from "../../constants";
 
-type colorInputProps = {
+type colorSectionsInputProps = {
   sections: colorSection[];
-  setSections: (sections: colorSection[]) => void;
+  handleAddColor: () => void;
+  handleUpdateColor: (newHex: string, id: string) => void;
+  handleUpdateCount: (newCount: number, id: string) => void;
+  handleRemoveSection: (id: string) => void;
+  handleRandomizeColors: () => void;
+  handleShuffleColors: () => void;
+  handleDragSection: (event: DragEndEvent) => void;
 };
 
 /* style of each column in the input section
@@ -35,79 +38,17 @@ const deleteColStyle = genStyle + " h-7 aspect-square rounded-sm";
 // CSS for large buttons at bottom of input section
 const buttonStyle = "text-md py-1 mt-1 w-full";
 
-export const ColorSectionsInput = (props: colorInputProps) => {
-  const { sections, setSections } = props;
-
-  const handleAddColor = () => {
-    const newSection = {
-      id: nanoid(),
-      hex: "#FFFFFF",
-      count: 5,
-    };
-    setSections([...sections, newSection]);
-  };
-
-  const handleUpdateColor = (newHex: string, id: string) => {
-    const updatedSections = sections.map((section) => {
-      return id === section.id ? { ...section, hex: newHex } : section;
-    });
-    setSections(updatedSections);
-  };
-
-  const handleUpdateCount = (newCount: number, updatedSectionId: string) => {
-    const updatedSections = sections.map((section) => {
-      return updatedSectionId === section.id
-        ? { ...section, count: newCount }
-        : section;
-    });
-    setSections(updatedSections);
-  };
-
-  const handleRemoveSection = (id: string) => {
-    const remainingSections = sections.filter((section) => id !== section.id);
-    setSections(remainingSections);
-  };
-
-  const handleRandomizeColors = () => {
-    const randomIntInRange = (min: number, max: number) => {
-      return Math.floor(Math.random() * (max - min + 1) + min);
-    };
-
-    const randomHexPalette =
-      HEX_PALETTES[Math.floor(Math.random() * HEX_PALETTES.length)];
-
-    const sections = randomHexPalette.map((hex, i) => {
-      return {
-        id: nanoid(),
-        hex: hex,
-        count: randomIntInRange(1, 10),
-      };
-    });
-
-    setSections(sections);
-  };
-
-  const handleShuffleColors = () => {
-    const shuffledSections = sections
-      .map((value) => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
-
-    setSections(shuffledSections);
-  };
-
-  const handleDragSection = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (over && active.id !== over.id) {
-      const oldIndex = sections.findIndex(
-        (section) => section.id === active.id
-      );
-      const newIndex = sections.findIndex((section) => section.id === over.id);
-
-      const updatedSections = arrayMove(sections, oldIndex, newIndex);
-      setSections(updatedSections);
-    }
-  };
+export const ColorSectionsInput = (props: colorSectionsInputProps) => {
+  const {
+    sections,
+    handleAddColor,
+    handleUpdateColor,
+    handleUpdateCount,
+    handleRemoveSection,
+    handleRandomizeColors,
+    handleShuffleColors,
+    handleDragSection,
+  } = props;
 
   return (
     <div className="input-container">
@@ -127,6 +68,7 @@ export const ColorSectionsInput = (props: colorInputProps) => {
         >
           {sections.map((section) => (
             <ColorSectionInput
+              key={section.id}
               section={section}
               handleUpdateColor={handleUpdateColor}
               handleUpdateCount={handleUpdateCount}

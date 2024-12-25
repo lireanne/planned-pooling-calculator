@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ColorSectionsInput } from "./inputs/add-color-section/color-sections-input";
 import { CanvasStitchCountInput } from "./inputs/canvas-stitch-input";
 import { KnittingDirectionToggle } from "./inputs/knitting-direction-toggle";
@@ -9,8 +9,11 @@ import {
   MAX_STITCHES,
   DEFAULT_KNIT_BACK_AND_FORTH,
   DEFAULT_COLOR_SECTIONS,
+  HEX_PALETTES,
 } from "./constants";
 import { nanoid } from "nanoid";
+import { DragEndEvent } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
 
 // represents a section of the swatch/canvas where a specific color repeats a certain number of stitches
 export type colorSection = {
@@ -28,16 +31,98 @@ export const Pooler = () => {
   // # of stitches per row represented by # of columns in the canvas
   const [canvasCols, setCanvasCols] = useState(DEFAULT_STITCHES);
 
+  // toggle knitting direction (ie. render pixels back and forth or unidirectionally)
   const [knitBackAndForth, setKnitBackAndForth] = useState(
     DEFAULT_KNIT_BACK_AND_FORTH
   );
 
+  // Ensure canvasCols is within bounds
   const canvasColsWithinBounds =
     canvasCols >= MIN_STITCHES
       ? canvasCols <= MAX_STITCHES
         ? canvasCols
         : MAX_STITCHES
       : MIN_STITCHES;
+
+  // ---- Methods to handle CanvasStitchCountInput changes ----
+  const handleCanvasStitchCountChange = useCallback((newCols: number) => {
+    setCanvasCols(newCols);
+  }, []);
+
+  // ---- Methods to handle ColorSectionsInput changes----
+  const handleAddColor = () => {
+    const newSection = {
+      id: nanoid(),
+      hex: "#FFFFFF",
+      count: 5,
+    };
+    setSections([...sections, newSection]);
+  };
+
+  const handleUpdateColor = useCallback((newHex: string, id: string) => {
+    const updatedSections = sections.map((section) => {
+      return id === section.id ? { ...section, hex: newHex } : section;
+    });
+    setSections(updatedSections);
+  }, []);
+
+  const handleUpdateCount = useCallback(
+    (newCount: number, updatedSectionId: string) => {
+      const updatedSections = sections.map((section) => {
+        return updatedSectionId === section.id
+          ? { ...section, count: newCount }
+          : section;
+      });
+      setSections(updatedSections);
+    },
+    []
+  );
+
+  const handleRemoveSection = (id: string) => {
+    const remainingSections = sections.filter((section) => id !== section.id);
+    setSections(remainingSections);
+  };
+
+  const handleRandomizeColors = () => {
+    const randomIntInRange = (min: number, max: number) => {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    };
+
+    const randomHexPalette =
+      HEX_PALETTES[Math.floor(Math.random() * HEX_PALETTES.length)];
+
+    const sections = randomHexPalette.map((hex, i) => {
+      return {
+        id: nanoid(),
+        hex: hex,
+        count: randomIntInRange(1, 10),
+      };
+    });
+
+    setSections(sections);
+  };
+
+  const handleShuffleColors = () => {
+    const shuffledSections = sections
+      .map((value) => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+
+    setSections(shuffledSections);
+  };
+
+  const handleDragSection = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      const oldIndex = sections.findIndex(
+        (section) => section.id === active.id
+      );
+      const newIndex = sections.findIndex((section) => section.id === over.id);
+
+      const updatedSections = arrayMove(sections, oldIndex, newIndex);
+      setSections(updatedSections);
+    }
+  };
 
   return (
     <div className="lg:flex grid-rows-2 gap-10">
@@ -46,10 +131,22 @@ export const Pooler = () => {
           knitBackAndForth={knitBackAndForth}
           setKnitBackAndForth={setKnitBackAndForth}
         />
-        <CanvasStitchCountInput cols={canvasCols} setCols={setCanvasCols} />
-        <ColorSectionsInput sections={sections} setSections={setSections} />
+        <CanvasStitchCountInput
+          cols={canvasCols}
+          handleUpdate={handleCanvasStitchCountChange}
+        />
+        <ColorSectionsInput
+          sections={sections}
+          handleAddColor={handleAddColor}
+          handleUpdateColor={handleUpdateColor}
+          handleUpdateCount={handleUpdateCount}
+          handleRemoveSection={handleRemoveSection}
+          handleRandomizeColors={handleRandomizeColors}
+          handleShuffleColors={handleShuffleColors}
+          handleDragSection={handleDragSection}
+        />
       </div>
-      <div className="h-[90vh]">
+      <div className="h-[85vh]">
         <Canvas
           colorSections={sections}
           cols={canvasColsWithinBounds}

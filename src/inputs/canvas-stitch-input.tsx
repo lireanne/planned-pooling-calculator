@@ -4,9 +4,9 @@ import { RangeSlider } from "../components/range-slider";
 /** Input component for setting the number of stitches per row in the canvas */
 export const CanvasStitchCountInput = (props: {
   cols: number;
-  setCols: (cols: number) => void;
+  handleUpdate: (cols: number) => void;
 }) => {
-  const { cols, setCols } = props;
+  const { cols, handleUpdate } = props;
 
   return (
     <div className="input-container">
@@ -16,18 +16,18 @@ export const CanvasStitchCountInput = (props: {
         <input
           type="number"
           value={cols}
-          onChange={(e) => setCols(parseInt(e.target.value))}
-          className="w-full border border-violet-500 rounded-sm p-1"
+          onChange={(e) => handleUpdate(parseInt(e.target.value))}
+          className="w-full rounded-sm p-1"
         />
 
         {cols < MIN_STITCHES && (
-          <p className="text-xs text-red-500">
+          <p className="warning-message">
             Minimum stitches per row is {MIN_STITCHES}
           </p>
         )}
 
         {cols > MAX_STITCHES && (
-          <p className="text-xs text-red-500">
+          <p className="warning-message">
             Maximum stitches per row is {MAX_STITCHES}
           </p>
         )}
@@ -37,7 +37,7 @@ export const CanvasStitchCountInput = (props: {
         min={MIN_STITCHES}
         max={MAX_STITCHES}
         value={cols}
-        onInput={(e) => setCols(parseInt(e.currentTarget.value))}
+        onInput={(e) => handleUpdate(parseInt(e.currentTarget.value))}
       />
     </div>
   );

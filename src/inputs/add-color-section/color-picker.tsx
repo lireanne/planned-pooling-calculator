@@ -21,7 +21,7 @@ const useOutsideClick = (ref: any, callback: Function) => {
 
 const ColorPicker = (props: {
   colorSection: colorSection;
-  updateColor: Function;
+  updateColor: (newHex: string, id: string) => void;
   style?: string;
 }) => {
   const { colorSection, updateColor, style } = props;
@@ -32,8 +32,8 @@ const ColorPicker = (props: {
   const [pickerVisible, setPickerVisible] = useState(false);
 
   useEffect(() => {
-    updateColor(color);
-  }, [color, updateColor]);
+    updateColor(color, colorSection.id);
+  }, [color, updateColor, colorSection.id]);
 
   // Close picker upon clicking anywhere on screen
   useOutsideClick(screenRef, () => setPickerVisible(false));
