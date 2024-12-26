@@ -18,7 +18,7 @@ const Canvas = (props: canvasProps) => {
   // Get the full repeat of colorSections as an array of hex values
   const fullRepeat = colorSections.reduce((acc, section) => {
     const { count, hex } = section;
-    const x = Array<string>(count).fill(hex);
+    const x = count ? Array<string>(count).fill(hex) : [];
     return acc.concat(x);
   }, [] as string[]);
 
