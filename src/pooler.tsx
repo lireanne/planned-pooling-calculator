@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import { ColorSectionsInput } from "./inputs/add-color-section/color-sections-input";
 import { CanvasStitchCountInput } from "./inputs/canvas-stitch-input";
 import { KnittingDirectionToggle } from "./inputs/knitting-direction-toggle";
@@ -23,10 +23,20 @@ export type colorSection = {
 };
 
 export const Pooler = () => {
+  useEffect(() => {
+    console.log("Pooler mounted");
+  }, []);
   // Color sections to be repeated within the canvas
-  const [sections, setSections] = useState<colorSection[]>(
-    DEFAULT_COLOR_SECTIONS.map((section) => ({ ...section, id: nanoid() }))
-  );
+  const [sections, setSections] = useState<colorSection[]>(() => {
+    return DEFAULT_COLOR_SECTIONS.map((section) => ({
+      ...section,
+      id: nanoid(),
+    }));
+  });
+
+  useEffect(() => {
+    console.log("Pooler updated w/ sections");
+  }, [sections]);
 
   // # of stitches per row represented by # of columns in the canvas
   const [canvasCols, setCanvasCols] = useState(DEFAULT_STITCHES);
@@ -45,9 +55,9 @@ export const Pooler = () => {
       : MIN_STITCHES;
 
   // ---- Methods to handle CanvasStitchCountInput changes ----
-  const handleCanvasStitchCountChange = useCallback((newCols: number) => {
+  const handleCanvasStitchCountChange = (newCols: number) => {
     setCanvasCols(newCols);
-  }, []);
+  };
 
   // ---- Methods to handle ColorSectionsInput changes----
   const handleAddColor = () => {
@@ -56,27 +66,25 @@ export const Pooler = () => {
       hex: "#FFFFFF",
       count: 5,
     };
+
     setSections([...sections, newSection]);
   };
 
-  const handleUpdateColor = useCallback((newHex: string, id: string) => {
+  const handleUpdateColor = (newHex: string, id: string) => {
     const updatedSections = sections.map((section) => {
       return id === section.id ? { ...section, hex: newHex } : section;
     });
     setSections(updatedSections);
-  }, []);
+  };
 
-  const handleUpdateCount = useCallback(
-    (newCount: number, updatedSectionId: string) => {
-      const updatedSections = sections.map((section) => {
-        return updatedSectionId === section.id
-          ? { ...section, count: newCount }
-          : section;
-      });
-      setSections(updatedSections);
-    },
-    []
-  );
+  const handleUpdateCount = (newCount: number, updatedSectionId: string) => {
+    const updatedSections = sections.map((section) => {
+      return updatedSectionId === section.id
+        ? { ...section, count: newCount }
+        : section;
+    });
+    setSections(updatedSections);
+  };
 
   const handleRemoveSection = (id: string) => {
     const remainingSections = sections.filter((section) => id !== section.id);

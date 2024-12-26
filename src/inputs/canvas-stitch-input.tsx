@@ -7,6 +7,7 @@ export const CanvasStitchCountInput = (props: {
   handleUpdate: (cols: number) => void;
 }) => {
   const { cols, handleUpdate } = props;
+  console.log("CanvasStitchCountInput");
 
   return (
     <div className="input-container">

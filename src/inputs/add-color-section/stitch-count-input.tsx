@@ -5,15 +5,15 @@ import { colorSection } from "../../pooler";
 // Input component for updating the stitch count of a color section
 const StitchCountInput = (props: {
   colorSection: colorSection;
-  updateCount: (newCount: number, id: string) => void;
+  updateCountToPooler: (newCount: number, id: string) => void;
   style?: string;
 }) => {
-  const { colorSection, updateCount, style } = props;
+  const { colorSection, updateCountToPooler, style } = props;
   const [count, setCount] = useState<number>(props.colorSection.count);
 
   useEffect(() => {
-    updateCount(count, colorSection.id);
-  }, [count, updateCount, colorSection.id]);
+    updateCountToPooler(count, colorSection.id);
+  }, [count, colorSection.id]);
 
   const decreaseCount = () => {
     const newCount = count - 1;
@@ -32,7 +32,9 @@ const StitchCountInput = (props: {
         type="number"
         className="h-full text-center border-y align-top"
         value={count}
-        onChange={(e) => setCount(parseInt(e.target.value))}
+        onChange={(e) => {
+          setCount(parseInt(e.target.value));
+        }}
         onKeyDown={(e) => {
           ["ArrowUp", "+"].includes(e.key) && setCount(count + 1);
           ["ArrowDown", "-"].includes(e.key) && decreaseCount();

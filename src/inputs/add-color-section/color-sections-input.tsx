@@ -86,18 +86,18 @@ export const ColorSectionsInput = (props: colorSectionsInputProps) => {
       <Button
         className={buttonStyle}
         display="add color"
-        onClick={() => handleAddColor()}
+        onClick={handleAddColor}
       ></Button>
       <hr className="h-px my-4 bg-gray-300 border-0"></hr>
       <Button
         className={buttonStyle}
         display="randomize!"
-        onClick={() => handleRandomizeColors()}
+        onClick={handleRandomizeColors}
       ></Button>
       <Button
         className={buttonStyle}
         display="shuffle colors!"
-        onClick={() => handleShuffleColors()}
+        onClick={handleShuffleColors}
       ></Button>
     </div>
   );

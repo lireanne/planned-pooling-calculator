@@ -60,12 +60,12 @@ export const ColorSectionInput = (props: colorSectionInputProps) => {
       </div>
       <ColorPicker
         colorSection={section}
-        updateColor={handleUpdateColor}
+        updateColorToPooler={handleUpdateColor}
         style={colorPickerColStyle}
       />
       <StitchCountInput
         colorSection={section}
-        updateCount={handleUpdateCount}
+        updateCountToPooler={handleUpdateCount}
         style={stitchCountColStyle}
       />
       <DeleteButton
