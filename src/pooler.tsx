@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ColorSectionsInput } from "./inputs/add-color-section/color-sections-input";
 import { CanvasStitchCountInput } from "./inputs/canvas-stitch-input";
 import { KnittingDirectionToggle } from "./inputs/knitting-direction-toggle";
